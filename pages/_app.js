@@ -1,12 +1,14 @@
- const MyApp = ({Component, pageProps}) => {
+import  '../styles/main.scss'
+
+const MyApp = ({ Component, pageProps }) => {
   return (
     <>
       <Component {...pageProps} />
-      <style jsx global>{`
+      {/* <style jsx global>{`
         body{
           font-family: 'Lato', sans-serif;
         }
-      `}</style>
+      `}</style> */}
     </>
   )
 }
