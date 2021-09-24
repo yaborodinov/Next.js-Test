@@ -50,12 +50,25 @@ const Post = ({ post: serverPost }) => {
 
 export default Post
 
-Post.getInitialProps = async ({query, request}) => {
-  if (!request) return {post: null}
-  const response = await axios.get(`http://localhost:4200/posts/${query.id}`)
-  const post = response.post
+
+// использовать для комбинирования Front-end & Back-end
+
+// Post.getInitialProps = async ({query, request}) => {
+//   if (!request) return {post: null}
+//   const response = await axios.get(`http://localhost:4200/posts/${query.id}`)
+//   const post = response.post
   
-  return {
-    post
-  }
+//   return {
+//     post
+//   }
+// }
+
+
+
+// можно использовать только для Server Side rendering
+export async function getServerSideProps({query, req}) {
+    const response = await axios.get(`http://localhost:4200/posts/${query.id}`)
+    const post = response.data
+
+    return { props:{post}}
 }
