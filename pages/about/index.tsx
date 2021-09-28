@@ -2,8 +2,11 @@ import Router from 'next/router'
 
 import { MainLoyout } from '../../components/MainLoyout'
 
-export default function About({title}) {
-  console.log('ищу', title);
+interface AboutPropsType{
+  title: string
+}
+
+export default function About({title}: AboutPropsType) {
   const linkHandleClick = () => {
      Router.push('/posts')
   }
@@ -18,7 +21,7 @@ export default function About({title}) {
 
 About.getInitialProps = async () => {
   const response = await fetch('http://localhost:4200/about')
-  const data = await response.json()
+  const data: AboutPropsType = await response.json()
     
 
   return {

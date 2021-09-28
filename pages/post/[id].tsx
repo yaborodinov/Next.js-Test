@@ -5,10 +5,15 @@ import classes from '../../styles/btn.module.scss'
 
 import {MainLoyout} from '../../components/MainLoyout'
 import { useRouter } from 'next/router'
+import { NextPageContext } from 'next'
+import { MyPost } from '../../interfaces/post'
 
-const Post = ({ post: serverPost }) => {
+interface PostPageProps{
+  post: MyPost
+}
+
+const Post = ({ post: serverPost }: PostPageProps) => {
   const [post, setPost] = useState(serverPost)
-  console.log(serverPost);
   const router = useRouter()
   useEffect(() => {
     async function load() {
@@ -22,9 +27,6 @@ const Post = ({ post: serverPost }) => {
       load()
     }
   }, [])
-
-  
-
 
   if (!post) {
     return <MainLoyout>
@@ -63,12 +65,20 @@ export default Post
 //   }
 // }
 
+interface PostNextPageContext extends NextPageContext {
+  query: {
+    id: string
+  }
+}
 
 
 // можно использовать только для Server Side rendering
-export async function getServerSideProps({query, req}) {
+export async function getServerSideProps({ query, req }: PostNextPageContext) {
+  if (!req) {
+    return{posts: null}
+  }
     const response = await axios.get(`http://localhost:4200/posts/${query.id}`)
-    const post = response.data
+    const post: MyPost = response.data
 
     return { props:{post}}
 }

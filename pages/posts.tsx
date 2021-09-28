@@ -4,7 +4,14 @@ import axios from 'axios'
 import {MainLoyout} from '../components/MainLoyout'
 import { useState, useEffect } from 'react'
 
-const Posts = ({ posts: serverPosts }) => {
+import { MyPost } from '../interfaces/post'
+import { NextPageContext } from 'next'
+
+interface PostPageProps{
+  posts: MyPost[]
+}
+
+const Posts = ({ posts: serverPosts }: PostPageProps) => {
   const [posts, setPosts] = useState(serverPosts)
   useEffect(() => {
     const load = async () => {
@@ -45,17 +52,16 @@ const Posts = ({ posts: serverPosts }) => {
   )
 }
 
-
 export default Posts
 
-Posts.getInitialProps = async ({ req }) => {
+Posts.getInitialProps = async ({ req }: NextPageContext) => {
   if (!req) {
     return {
       posts: null
     }
   }
-  const response = await axios.get('http://localhost:4200/posts')
-  const posts = response.posts
+  const response = await fetch('http://localhost:4200/posts')
+  const posts: MyPost[] = await response.json()
 
   return {
     posts
