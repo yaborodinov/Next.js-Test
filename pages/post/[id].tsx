@@ -77,7 +77,7 @@ export async function getServerSideProps({ query, req }: PostNextPageContext) {
   if (!req) {
     return{posts: null}
   }
-    const response = await axios.get(`http://localhost:4200/posts/${query.id}`)
+    const response = await axios.get(`${process.env.API_URL}/posts/${query.id}`)
     const post: MyPost = response.data
 
     return { props:{post}}
